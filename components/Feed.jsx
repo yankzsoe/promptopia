@@ -1,10 +1,10 @@
 'use client'
 
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 
 import PromptCard from './PromptCard'
 
-const PromCardList = ({data, handleTagClick}) => {
+const PromCardList = ({ data, handleTagClick }) => {
   return (
     <div className='mt-16 prompt_layout'>
       {data.map((post) => (
@@ -35,7 +35,7 @@ const Feed = () => {
     }
 
     fetchPosts();
-  },[]);
+  }, []);
 
   return (
     <section className='feed'>
@@ -53,7 +53,7 @@ const Feed = () => {
 
       <PromCardList
         data={posts}
-        handleTagClick={() => {}}>
+        handleTagClick={() => { }}>
       </PromCardList>
     </section>
   )

@@ -3,12 +3,12 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect } from "react"
-import { signIn, signOut, useSession, getProviders} from 'next-auth/react'
+import { signIn, signOut, useSession, getProviders } from 'next-auth/react'
 
 const Nav = () => {
-  const {data:session } = useSession();
+  const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
-  const [toggleDropdown, setToggleDropdown]= useState(false);
+  const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -45,8 +45,8 @@ const Nav = () => {
             </button>
 
             <Link href="/profile">
-              <Image 
-                src= {session?.user.image}
+              <Image
+                src={session?.user.image}
                 width={37}
                 height={37}
                 className="rounded-full"
@@ -56,49 +56,49 @@ const Nav = () => {
           </div>
         ) : (
           <>
-            {providers && 
+            {providers &&
               Object.values(providers).map((provider) => (
-              <button
-                type="button"
-                key={provider.name}
-                onClick={()=> signIn(provider.id)}
-                className="black_btn"
+                <button
+                  type="button"
+                  key={provider.name}
+                  onClick={() => signIn(provider.id)}
+                  className="black_btn"
                 >
                   Sign In
-              </button>
-            ))}
+                </button>
+              ))}
           </>
         )}
       </div>
 
-      { /* Mobile Navigation */ }
+      { /* Mobile Navigation */}
       <div className="sm:hidden flex relative">
         {session?.user ? (
           <div>
-            <Image 
-                src= {session?.user.image}
-                width={37}
-                height={37}
-                className="rounded-full"
-                alt="profile"
-                onClick={()=> setToggleDropdown((prev)=> !prev)}
+            <Image
+              src={session?.user.image}
+              width={37}
+              height={37}
+              className="rounded-full"
+              alt="profile"
+              onClick={() => setToggleDropdown((prev) => !prev)}
             />
             {toggleDropdown && (
               <div className="dropdown">
-                <Link 
+                <Link
                   href="/profile"
                   className="dropdown_link"
-                  onClick={()=> setToggleDropdown(false)}
-                  >
-                    My Profile
+                  onClick={() => setToggleDropdown(false)}
+                >
+                  My Profile
                 </Link>
 
-                <Link 
+                <Link
                   href="/create-prompt"
                   className="dropdown_link"
-                  onClick={()=> setToggleDropdown(false)}
-                  >
-                    Create Prompt
+                  onClick={() => setToggleDropdown(false)}
+                >
+                  Create Prompt
                 </Link>
 
                 <button
@@ -120,10 +120,10 @@ const Nav = () => {
               <button
                 type="button"
                 key={provider.name}
-                onClick={()=> signIn(provider.id)}
+                onClick={() => signIn(provider.id)}
                 className="black_btn"
-                >
-                  Sign In
+              >
+                Sign In
               </button>
             ))}
           </>

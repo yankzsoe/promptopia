@@ -34,13 +34,13 @@ const EditPrompt = () => {
         e.preventDefault();
         setSubmitting(true);
 
-        if(!promptId) alert('Prompt ID not found');
+        if (!promptId) alert('Prompt ID not found');
 
         try {
             const res = await fetch(`api/prompt/${promptId}`, {
                 method: 'PATCH',
                 body: JSON.stringify({
-                    prompt: post.prompt,                    
+                    prompt: post.prompt,
                     tag: post.tag,
                 })
             })

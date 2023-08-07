@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 
 import PromptCard from './PromptCard'
 
-const PromCardList = ({ data, handleTagClick }) => {
+const PromptCardList = ({ data, handleTagClick }) => {
   return (
     <div className='mt-16 prompt_layout'>
       {data.map((post) => (
@@ -21,19 +21,38 @@ const PromCardList = ({ data, handleTagClick }) => {
 const Feed = () => {
   const [searchText, setSearchText] = useState('');
   const [posts, setPosts] = useState([]);
+  const [searchedResults, setSearchedResults] = useState([]);
+  const [searchTimeout, setSearchTimeout] = useState(null);
 
   const handleSearchChange = (e) => {
+    clearTimeout(searchTimeout);
+    setSearchText(e.target.value);
 
+    setSearchTimeout(
+      setTimeout(() => {
+        const filtered = filterPosts(e.target.value);
+        setSearchedResults(filtered);
+      }, 500)
+    );
+  }
+
+  const filterPosts = (paramSearch) => {
+    const regex = new RegExp(paramSearch, 'i'); // 'i' flag for ignore case or case-insensitive search
+    return posts.filter((item) => (
+      regex.test(item.creator.name) ||
+        regex.test(item.prompt) ||
+        regex.test(item.tag)
+    ));
+  }
+
+  const fetchPosts = async () => {
+    const response = await fetch('/api/prompt');
+    const data = await response.json();
+
+    setPosts(data);
   }
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch('/api/prompt');
-      const data = await response.json();
-
-      setPosts(data);
-    }
-
     fetchPosts();
   }, []);
 
@@ -51,10 +70,19 @@ const Feed = () => {
         </input>
       </form>
 
-      <PromCardList
-        data={posts}
-        handleTagClick={() => { }}>
-      </PromCardList>
+      {
+        searchText ? (
+          <PromptCardList
+            data={searchedResults}
+            handleTagClick={() => { }}>
+          </PromptCardList>
+        ) : (
+          <PromptCardList
+            data={posts}
+            handleTagClick={() => { }}>
+          </PromptCardList>
+        )
+      }
     </section>
   )
 }

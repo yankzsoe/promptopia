@@ -36,12 +36,18 @@ const Feed = () => {
     );
   }
 
+  const handleTagClick = (tagName) => {
+    setSearchText(tagName);
+    const filtered = filterPosts(tagName);
+    setSearchedResults(filtered);
+  }
+
   const filterPosts = (paramSearch) => {
     const regex = new RegExp(paramSearch, 'i'); // 'i' flag for ignore case or case-insensitive search
     return posts.filter((item) => (
       regex.test(item.creator.name) ||
-        regex.test(item.prompt) ||
-        regex.test(item.tag)
+      regex.test(item.prompt) ||
+      regex.test(item.tag)
     ));
   }
 
@@ -74,12 +80,12 @@ const Feed = () => {
         searchText ? (
           <PromptCardList
             data={searchedResults}
-            handleTagClick={() => { }}>
-          </PromptCardList>
+            handleTagClick={handleTagClick}
+          />
         ) : (
           <PromptCardList
             data={posts}
-            handleTagClick={() => { }}>
+            handleTagClick={handleTagClick}>
           </PromptCardList>
         )
       }
